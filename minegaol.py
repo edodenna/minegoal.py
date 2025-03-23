@@ -14,7 +14,7 @@ if "attempts" not in st.session_state:
 if "choices" not in st.session_state:
     st.session_state.choices = []  
 if "goal_step" not in st.session_state:
-    st.session_state.goal_step = False  # Nuova fase: tiro in porta
+    st.session_state.goal_step = False 
 if "goalkeeper_choice" not in st.session_state:
     st.session_state.goalkeeper_choice = None
 if "show_goalkeeper_choice" not in st.session_state:
@@ -71,7 +71,7 @@ else:
         else:
             st.write(f"Goal!!! You shot at {chosen_shot} and the goalkeeper went {st.session_state.goalkeeper_choice}!")
         
-        st.session_state.goal_step = False  # Reset partita
+        st.session_state.goal_step = False  
         st.session_state.attempts = 0
         st.session_state.choices = []
         st.session_state.squares = [True, True, True, True, False]
@@ -90,39 +90,36 @@ if st.button("New game"):
 ## Probability of winning the game
 """
 
-# Funzione per simulare un singolo gioco
+
 def simulate_game():
-    # Inizializzo le variabili per la simulazione
+    
     sim_attempts = 0
     sim_goal_step = False
     
-    # Simulazione della fase dei passaggi
+   
     while sim_attempts < 5 and not sim_goal_step:
         sim_squares = [True, True, True, True, False]
         if sim_attempts == 3:
             sim_squares = [True, True, True, False, False]
         shuffle(sim_squares)
         
-        # Scelta casuale di un quadrato
+        
         sim_chosen_square = choice(range(5))
         
         if sim_squares[sim_chosen_square]:
             sim_attempts += 1
-        else:
-            # Fallito, persa palla
+        else:         
             return False
     
-    # Se ha superato tutti e 5 i livelli, fase del tiro in porta
+    
     if sim_attempts == 5:
         goalkeeper_choice = choice(["Bottom Left", "Top Left", "Center", "Bottom Right", "Top Right"])
         player_choice = choice(["Bottom Left", "Top Left", "Center", "Bottom Right", "Top Right"])
-        
-        # Segna gol se la scelta del giocatore è diversa da quella del portiere
         return player_choice != goalkeeper_choice
     
     return False
 
-# Sezione delle statistiche di simulazione
+
 with st.expander("Simulation Statistics"):
     col1, col2 = st.columns(2)
     with col1:
@@ -136,14 +133,14 @@ with st.expander("Simulation Statistics"):
     
     with col2:
         if st.session_state.simulation_results['total'] > 0:
-            # Creare un grafico delle probabilità
+           
             fig, ax = plt.subplots()
             ax.pie([st.session_state.simulation_results['wins'], st.session_state.simulation_results['losses']], 
                   labels=['Wins', 'Losses'], autopct='%1.1f%%', colors=['green', 'red'])
             ax.set_title('Simulation Results')
             st.pyplot(fig)
     
-    # Pulsanti per simulazione
+  
     sim_col1, sim_col2, sim_col3 = st.columns(3)
     with sim_col1:
         if st.button("Run 1 Simulation"):
